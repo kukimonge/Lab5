@@ -6,7 +6,7 @@
  * ----------------------------------------------------------------------- */
 
  // Función principal del programa.
-int main() {
+int main(void) {
     // Creamos un nuevo arreglo dinámico con una capacidad inicial de 3.
     printf("Creando un arreglo con capacidad inicial para 3 elementos...\n");
     Array* arregloPrueba = array_create(3);
