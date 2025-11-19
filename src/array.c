@@ -6,6 +6,11 @@
 
 // Función para crear un nuevo arreglo dinámico con una capacidad inicial dada.
 Array* array_create(int initial_capacity) {
+    // Verificamos que la capacidad inicial sea válida.
+    if (initial_capacity <= 0) {
+        fprintf(stderr, "> ERROR: La capacidad inicial debe ser mayor que cero.\n");
+        return NULL; // Si no es válida, retornamos NULL.
+    }
     // Reservamos memoria para la estructura Array.
     Array* array = (Array*)malloc(sizeof(Array));
     if (array == NULL) {
@@ -36,7 +41,7 @@ void array_add_element(Array* array, int value) {
     }
     // Verificamos si el arreglo está lleno y necesitamos redimensionarlo.
     if (array->size >= array->capacity) {
-        int new_capacity = array->capacity * 2; // Duplicamos la capacidad del arreglo.
+        int new_capacity = array->capacity * ARRAY_GROWTH_FACTOR; // Duplicamos la capacidad del arreglo.
         int* new_data = (int*)realloc(array->data, new_capacity * sizeof(int));
 
         // Verificamos si la reasignación fue exitosa.
@@ -79,18 +84,21 @@ void array_delete_element(Array* array, int index) {
 }
 
 // Función para obtener un elemento en una posición específica del arreglo dinámico.
-int array_get_element(Array* array, int index) {
-    if (array == NULL) {
-        fprintf(stderr, "> ERROR: Arreglo no válido.\n");
-        return -1; // Retornamos un índice inválido para indicar error.
+// NOTA: Se devuelve el valor a través de un puntero para que la función pueda indicar errores.
+int array_get_element(Array* array, int index, int* value) {
+    // Verificamos que el arreglo y el puntero al valor sean válidos.
+    if (array == NULL || value == NULL) {
+        fprintf(stderr, "> ERROR: Arreglo o puntero inválido.\n");
+        return ARRAY_ERROR; // Retornamos 0 para indicar error.
     }
     // Verificamos si el índice está dentro de los límites del arreglo.
     if (index < 0 || index >= array->size) {
         fprintf(stderr, "> ERROR: Índice fuera de rango.\n");
-        return -1; // Retornamos un índice inválido para indicar error.
+        return ARRAY_ERROR; // Retornamos 0 para indicar error.
     }
-    // Retornamos el elemento en la posición especificada.
-    return array->data[index];
+    // Asignamos el valor del elemento solicitado al puntero proporcionado.
+    *value = array->data[index];
+    return ARRAY_SUCCESS; // Retornamos 1 para indicar éxito.
 }
 
 // Función para mostrar todos los elementos del arreglo dinámico.

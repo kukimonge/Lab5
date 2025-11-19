@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define ARRAY_GROWTH_FACTOR 2
+#define ARRAY_SUCCESS 1
+#define ARRAY_ERROR 0
+
 /* --------------------------------------------------------------
  * Header file para la implementación de un arreglo dinámico en C.
  * -------------------------------------------------------------- */
@@ -23,7 +27,7 @@ void array_add_element(Array* array, int value);
 void array_delete_element(Array* array, int index);
 
 // Función para obtener un elemento en una posición específica del arreglo dinámico.
-int array_get_element(Array* array, int index);
+int array_get_element(Array* array, int index, int* value);
 
 // Función para mostrar todos los elementos del arreglo dinámico.
 void array_print(Array* array);
